@@ -488,7 +488,7 @@ void loop()
   Button_Control();
   if (button_state == 6) // Chay mu tan cong phai
   {
-    if (firstRun)
+    if (firstRun == true)
     {
       delay(2900);
       firstRun = false;
@@ -498,7 +498,7 @@ void loop()
   }
   else if (button_state == 7) // chay co ban < rcm>
   {
-    if (firstRun)
+    if (firstRun == true)
     {
       delay(2900);
       firstRun = false; //
@@ -508,7 +508,7 @@ void loop()
   }
   else if (button_state == 8) // Chay ne doi thu
   {
-    if (firstRun)
+    if (firstRun == true)
     {
       delay(2900);
       firstRun = false;
@@ -522,7 +522,7 @@ void loop()
   }
   else if (button_state == 4) // Chay mu tan cong trai
   {
-    if(firstRun)
+    if(firstRun == true)
     {
       delay(2900);
       firstRun = false;
