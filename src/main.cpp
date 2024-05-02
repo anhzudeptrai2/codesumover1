@@ -151,7 +151,7 @@ void proval()
   }
   else if (valIRL == 0)
   {
-    Serial.println("Lui phai"); 
+    Serial.println("Lui phai");
     LBACKWARD();
   }
   else if (valIRL == 0 && valIRR == 0)
@@ -420,7 +420,7 @@ void Button_Control()
   int val_K8 = digitalRead(button_K8);
   int val_K5 = digitalRead(button_K5);
   int val_K4 = digitalRead(button_K4);
-  
+
   if (val_K6 == 0)
   {
     button_state = 6;
@@ -461,7 +461,7 @@ void setup()
   pinMode(trig2, OUTPUT);
   pinMode(trig3, OUTPUT);
 
-  pinMode(echo1, INPUT); // Nhan 
+  pinMode(echo1, INPUT); // Nhan
   pinMode(echo2, INPUT);
   pinMode(echo3, INPUT);
   // nut bam
@@ -482,7 +482,7 @@ void loop()
   read_SRL();
   read_SRR();
 
-  filterValF(); //* chay qua bo loc 
+  filterValF(); //* chay qua bo loc
   filterValL();
   filterValR();
   Button_Control();
@@ -522,12 +522,11 @@ void loop()
   }
   else if (button_state == 4) // Chay mu tan cong trai
   {
-    if(firstRun == true)
+    if (firstRun == true)
     {
       delay(2900);
       firstRun = false;
     }
+    tactic_attackL();
   }
-  tactic_attackL();
 }
-  
