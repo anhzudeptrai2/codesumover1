@@ -5,7 +5,7 @@
                                                               * @modify date 2024-05-03 07:00:00
                                                               * @desc [Robot SUMO 2024 - AML 2 Phenikaa Uni ]
 
-**/
+*/
 
 #include <Arduino.h>
 int RPWM1 = 7;
@@ -151,7 +151,7 @@ void proval()
   }
   else if (valIRL == 0)
   {
-    Serial.println("Lui phai");
+    Serial.println("Lui phai"); 
     LBACKWARD();
   }
   else if (valIRL == 0 && valIRR == 0)
@@ -291,7 +291,39 @@ void tactic_attackR()
     }
     else
     {
-      tactic_default();
+      if (filterValF() <= 40)
+      {
+        Serial.println("pushF");
+        PUSH();
+      }
+      else if (filterValR() <= 30)
+      {
+        Serial.println("pushR");
+        ROTATER();
+      }
+      else if (filterValL() <= 30)
+      {
+        Serial.println("pushL");
+        ROTATEL();
+      }
+      else if (filterValF() <= 30 && filterValR() <= 30)
+      {
+        Serial.println("chay ne diem mu phai");
+        RFORWARD();
+      }
+      else if (filterValF() <= 30 && filterValL() <= 30)
+      {
+        Serial.println("chay ne diem mu trai");
+        LFORWARD();
+      }
+      else if (filterValF() > 30 && filterValL() > 30 && filterValR() > 30)
+      {
+        BACKWARD();
+      }
+      else
+      {
+        ROTATEL();
+      }
     }
   }
 }
@@ -316,7 +348,39 @@ void tactic_attackL()
     }
     else
     {
-      tactic_default();
+      if (filterValF() <= 40)
+      {
+        Serial.println("pushF");
+        PUSH();
+      }
+      else if (filterValR() <= 30)
+      {
+        Serial.println("pushR");
+        ROTATER();
+      }
+      else if (filterValL() <= 30)
+      {
+        Serial.println("pushL");
+        ROTATEL();
+      }
+      else if (filterValF() <= 30 && filterValR() <= 30)
+      {
+        Serial.println("chay ne diem mu phai");
+        RFORWARD();
+      }
+      else if (filterValF() <= 30 && filterValL() <= 30)
+      {
+        Serial.println("chay ne diem mu trai");
+        LFORWARD();
+      }
+      else if (filterValF() > 30 && filterValL() > 30 && filterValR() > 30)
+      {
+        BACKWARD();
+      }
+      else
+      {
+        ROTATEL();
+      }
     }
   }
 }
@@ -404,6 +468,8 @@ void setup()
   pinMode(button_K6, INPUT_PULLUP);
   pinMode(button_K7, INPUT_PULLUP);
   pinMode(button_K8, INPUT_PULLUP);
+  pinMode(button_K5, INPUT_PULLUP);
+  pinMode(button_K4, INPUT_PULLUP);
   // ngat
   attachInterrupt(0, proval, RISING);
   attachInterrupt(1, proval, RISING);
@@ -456,16 +522,12 @@ void loop()
   }
   else if (button_state == 4) // Chay mu tan cong trai
   {
-    delay(2900);
-    firstRun = false;
+    if(firstRun)
+    {
+      delay(2900);
+      firstRun = false;
+    }
   }
   tactic_attackL();
-  // IR
-  // Serial.print(distance1);
-  // Serial.println("cm");
-  // Serial.print(distance2);
-  // Serial.println("cm");
-  // Serial.print(distance3);
-  // Serial.println("cm");
-  // delay(1000);
 }
+  
