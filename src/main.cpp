@@ -206,23 +206,23 @@ void tactic_default()
 {
   if (run_deafaul == true)
   {
-    if (filterValR() <= 35)
+    if (filterValR() <= 45)
     {
-      analogWrite(LPWM, 180);
+      analogWrite(LPWM, 225);
       analogWrite(RPWM, 0);
-      analogWrite(LPWM1, 70);
+      analogWrite(LPWM1, 100);
       analogWrite(RPWM1, 0);
       delay(333);
     }
-    else if (filterValL() <= 35)
+    else if (filterValL() <= 45)
     {
       analogWrite(LPWM, 0);
-      analogWrite(RPWM, 70);
+      analogWrite(RPWM, 100);
       analogWrite(LPWM1, 0);
-      analogWrite(RPWM1, 180);
+      analogWrite(RPWM1, 225);
       delay(333);
     }
-    else if (filterValF() <= 45)
+    else if (filterValF() <= 60)
     {
       analogWrite(LPWM, 255);
       analogWrite(RPWM, 0);
@@ -233,34 +233,30 @@ void tactic_default()
   }
   else if (run_deafaul == false)
   {
-    if (filterValF() <= 40)
+    if (filterValF() <= 60)
     {
       Serial.println("pushF");
       PUSH();
     }
-    else if (filterValR() <= 30)
+    else if (filterValR() <= 45)
     {
       Serial.println("pushR");
       ROTATER();
     }
-    else if (filterValL() <= 30)
+    else if (filterValL() <= 45)
     {
       Serial.println("pushL");
       ROTATEL();
     }
-    else if (filterValF() <= 30 && filterValR() <= 30)
+    else if (filterValF() <= 20 && filterValR() <= 20)
     {
       Serial.println("chay ne diem mu phai");
       RFORWARD();
     }
-    else if (filterValF() <= 30 && filterValL() <= 30)
+    else if (filterValF() <= 20 && filterValL() <= 20)
     {
       Serial.println("chay ne diem mu trai");
       LFORWARD();
-    }
-    else if (filterValF() > 30 && filterValL() > 30 && filterValR() > 30)
-    {
-      BACKWARD();
     }
     else
     {
@@ -291,34 +287,30 @@ void tactic_attackR()
     }
     else
     {
-      if (filterValF() <= 40)
+      if (filterValF() <= 60)
       {
         Serial.println("pushF");
         PUSH();
       }
-      else if (filterValR() <= 30)
+      else if (filterValR() <= 45)
       {
         Serial.println("pushR");
         ROTATER();
       }
-      else if (filterValL() <= 30)
+      else if (filterValL() <= 45)
       {
         Serial.println("pushL");
         ROTATEL();
       }
-      else if (filterValF() <= 30 && filterValR() <= 30)
+      else if (filterValF() <= 20 && filterValR() <= 20)
       {
         Serial.println("chay ne diem mu phai");
         RFORWARD();
       }
-      else if (filterValF() <= 30 && filterValL() <= 30)
+      else if (filterValF() <= 20 && filterValL() <= 20)
       {
         Serial.println("chay ne diem mu trai");
         LFORWARD();
-      }
-      else if (filterValF() > 30 && filterValL() > 30 && filterValR() > 30)
-      {
-        BACKWARD();
       }
       else
       {
@@ -348,34 +340,30 @@ void tactic_attackL()
     }
     else
     {
-      if (filterValF() <= 40)
+      if (filterValF() <= 60)
       {
         Serial.println("pushF");
         PUSH();
       }
-      else if (filterValR() <= 30)
+      else if (filterValR() <= 45)
       {
         Serial.println("pushR");
         ROTATER();
       }
-      else if (filterValL() <= 30)
+      else if (filterValL() <= 45)
       {
         Serial.println("pushL");
         ROTATEL();
       }
-      else if (filterValF() <= 30 && filterValR() <= 30)
+      else if (filterValF() <= 20 && filterValR() <= 20)
       {
         Serial.println("chay ne diem mu phai");
         RFORWARD();
       }
-      else if (filterValF() <= 30 && filterValL() <= 30)
+      else if (filterValF() <= 20 && filterValL() <= 20)
       {
         Serial.println("chay ne diem mu trai");
         LFORWARD();
-      }
-      else if (filterValF() > 30 && filterValL() > 30 && filterValR() > 30)
-      {
-        BACKWARD();
       }
       else
       {
@@ -388,19 +376,19 @@ void tactic_attackL()
 void tactic_defence()
 {
 
-  if (filterValR() <= 20)
+  if (filterValR() <= 30)
   {
     Serial.println("ne");
     RFORWARD();
   }
-  else if (filterValL() <= 20)
+  else if (filterValL() <= 30)
   {
     Serial.println("ne");
     LBACKWARD();
   }
   else
   {
-    if (filterValF() <= 40)
+    if (filterValF() <= 60)
     {
       PUSH();
       Serial.println("PushF");
@@ -493,8 +481,11 @@ void loop()
       delay(2900);
       firstRun = false;
     }
-    tactic_attackR();
-    Serial.println("tan cong phai");
+    else
+    {
+      tactic_attackR();
+      Serial.println("tan cong phai");
+    }
   }
   else if (button_state == 7) // chay co ban < rcm>
   {
@@ -503,8 +494,11 @@ void loop()
       delay(2900);
       firstRun = false; //
     }
-    tactic_default();
-    Serial.println("chay mac dich");
+    else
+    {
+      tactic_default();
+      Serial.println("chay mac dich");
+    }
   }
   else if (button_state == 8) // Chay ne doi thu
   {
@@ -513,12 +507,24 @@ void loop()
       delay(2900);
       firstRun = false;
     }
-    tactic_defence();
-    Serial.println("Chay trien thuat phong ngu");
+    else
+    {
+      tactic_defence();
+      Serial.println("Chay trien thuat phong ngu");
+    }
   }
   else if (button_state == 5)
   {
-    STOP();
+    if (firstRun == true)
+    {
+      delay(1500);
+      firstRun = false; //
+    }
+    else
+    {
+      tactic_default();
+      Serial.println("chay mac dich");
+    }
   }
   else if (button_state == 4) // Chay mu tan cong trai
   {
@@ -527,6 +533,9 @@ void loop()
       delay(2900);
       firstRun = false;
     }
-    tactic_attackL();
+    else
+    {
+      tactic_attackL();
+    }
   }
 }
