@@ -29,6 +29,8 @@ int valIRB;
 #define button_K8 A2 // tactics ne (dang hoan thien)
 #define button_K5 A3
 #define button_K4 A4
+#define button_K3 A6 // re trai
+#define button_K2 A7 // re phai
 unsigned long previousSR_millis = 0;
 unsigned long duration1, duration2, duration3;
 int distance1;
@@ -206,61 +208,64 @@ void tactic_default()
 {
   if (run_deafaul == true)
   {
-    if (filterValR() <= 45)
+    if (run_deafaul == true)
     {
-      analogWrite(LPWM, 225);
-      analogWrite(RPWM, 0);
-      analogWrite(LPWM1, 100);
-      analogWrite(RPWM1, 0);
-      delay(333);
+      if (filterValR() <= 40)
+      {
+        analogWrite(LPWM, 180);
+        analogWrite(RPWM, 0);
+        analogWrite(LPWM1, 70);
+        analogWrite(RPWM1, 0);
+        delay(333);
+      }
+      else if (filterValL() <= 40)
+      {
+        analogWrite(LPWM, 0);
+        analogWrite(RPWM, 70);
+        analogWrite(LPWM1, 0);
+        analogWrite(RPWM1, 180);
+        delay(333);
+      }
+      else if (filterValF() <= 45)
+      {
+        analogWrite(LPWM, 255);
+        analogWrite(RPWM, 0);
+        analogWrite(LPWM1, 0);
+        analogWrite(RPWM1, 255);
+      }
+      run_deafaul = false;
     }
-    else if (filterValL() <= 45)
+    else if (run_deafaul == false)
     {
-      analogWrite(LPWM, 0);
-      analogWrite(RPWM, 100);
-      analogWrite(LPWM1, 0);
-      analogWrite(RPWM1, 225);
-      delay(333);
-    }
-    else if (filterValF() <= 60)
-    {
-      analogWrite(LPWM, 255);
-      analogWrite(RPWM, 0);
-      analogWrite(LPWM1, 0);
-      analogWrite(RPWM1, 255);
-    }
-    run_deafaul = false;
-  }
-  else if (run_deafaul == false)
-  {
-    if (filterValF() <= 60)
-    {
-      Serial.println("pushF");
-      PUSH();
-    }
-    else if (filterValR() <= 45)
-    {
-      Serial.println("pushR");
-      ROTATER();
-    }
-    else if (filterValL() <= 45)
-    {
-      Serial.println("pushL");
-      ROTATEL();
-    }
-    else if (filterValF() <= 20 && filterValR() <= 20)
-    {
-      Serial.println("chay ne diem mu phai");
-      RFORWARD();
-    }
-    else if (filterValF() <= 20 && filterValL() <= 20)
-    {
-      Serial.println("chay ne diem mu trai");
-      LFORWARD();
-    }
-    else
-    {
-      ROTATEL();
+      if (filterValF() <= 45)
+      {
+        Serial.println("pushF");
+        PUSH();
+      }
+      else if (filterValR() <= 40)
+      {
+        Serial.println("pushR");
+        ROTATER();
+      }
+      else if (filterValL() <= 40)
+      {
+        Serial.println("pushL");
+        ROTATEL();
+      }
+      else if (filterValF() <= 20 && filterValR() <= 20)
+      {
+        Serial.println("chay ne diem mu phai");
+        RFORWARD();
+      }
+      else if (filterValF() <= 20 && filterValL() <= 20)
+      {
+        Serial.println("chay ne diem mu trai");
+        LFORWARD();
+      }
+      else
+      {
+        ROTATEL();
+      }
     }
   }
 }
@@ -399,7 +404,69 @@ void tactic_defence()
     }
   }
 }
-
+boolean run_farDefault = true;
+void tactic_farDefault()
+{
+  if (run_farDefault == true)
+  {
+    if (filterValR() <= 45)
+    {
+      analogWrite(LPWM, 225);
+      analogWrite(RPWM, 0);
+      analogWrite(LPWM1, 100);
+      analogWrite(RPWM1, 0);
+      delay(333);
+    }
+    else if (filterValL() <= 45)
+    {
+      analogWrite(LPWM, 0);
+      analogWrite(RPWM, 100);
+      analogWrite(LPWM1, 0);
+      analogWrite(RPWM1, 225);
+      delay(333);
+    }
+    else if (filterValF() <= 60)
+    {
+      analogWrite(LPWM, 255);
+      analogWrite(RPWM, 0);
+      analogWrite(LPWM1, 0);
+      analogWrite(RPWM1, 255);
+    }
+    run_farDefault = false;
+  }
+  else if (run_farDefault == false)
+  {
+    if (filterValF() <= 60)
+    {
+      Serial.println("pushF");
+      PUSH();
+    }
+    else if (filterValR() <= 45)
+    {
+      Serial.println("pushR");
+      ROTATER();
+    }
+    else if (filterValL() <= 45)
+    {
+      Serial.println("pushL");
+      ROTATEL();
+    }
+    else if (filterValF() <= 20 && filterValR() <= 20)
+    {
+      Serial.println("chay ne diem mu phai");
+      RFORWARD();
+    }
+    else if (filterValF() <= 20 && filterValL() <= 20)
+    {
+      Serial.println("chay ne diem mu trai");
+      LFORWARD();
+    }
+    else
+    {
+      ROTATEL();
+    }
+  }
+}
 int button_state = 0;
 void Button_Control()
 {
@@ -408,7 +475,8 @@ void Button_Control()
   int val_K8 = digitalRead(button_K8);
   int val_K5 = digitalRead(button_K5);
   int val_K4 = digitalRead(button_K4);
-
+  int val_K2 = digitalRead(button_K2);
+  int val_K3 = digitalRead(button_K3);
   if (val_K6 == 0)
   {
     button_state = 6;
@@ -428,6 +496,14 @@ void Button_Control()
   else if (val_K4 == 0)
   {
     button_state = 4;
+  }
+  else if (val_K2 == 0)
+  {
+    button_state = 2 ;
+  }
+  else if (val_K3 == 0)
+  {
+    button_state = 3;
   }
 }
 
@@ -458,6 +534,8 @@ void setup()
   pinMode(button_K8, INPUT_PULLUP);
   pinMode(button_K5, INPUT_PULLUP);
   pinMode(button_K4, INPUT_PULLUP);
+  pinMode(button_K2, INPUT_PULLUP);
+  pinMode(button_K3, INPUT_PULLUP);
   // ngat
   attachInterrupt(0, proval, RISING);
   attachInterrupt(1, proval, RISING);
@@ -517,13 +595,13 @@ void loop()
   {
     if (firstRun == true)
     {
-      delay(1500);
+      delay(2900);
       firstRun = false; //
     }
     else
     {
-      tactic_default();
-      Serial.println("chay mac dich");
+      tactic_farDefault();
+      Serial.println("chay mac dich quet tam xa ");
     }
   }
   else if (button_state == 4) // Chay mu tan cong trai
@@ -538,4 +616,5 @@ void loop()
       tactic_attackL();
     }
   }
+  
 }
